@@ -145,7 +145,9 @@ body {
 }
 .section-line { flex: 1; height: 2px; border-radius: 2px; }
 
-/* per-section colours */
+.section-wrapper { width: 100%; overflow: hidden; box-sizing: border-box; }
+
+  /* per-section colours */
 .sec-add { --accent: var(--orange); --step-color: var(--orange-dark); --tag-bg: rgba(255,107,26,0.2); --tag-color: var(--orange-light); --emoji-bg: rgba(255,107,26,0.15); }
 .sec-add .section-emoji { background: rgba(255,107,26,0.15); }
 .sec-add .section-line { background: linear-gradient(90deg, var(--orange), transparent); }
@@ -365,67 +367,11 @@ body {
 }
 
   /* SPELLING SECTION */
-  .sec-spell { --accent: #e91e8c; --step-color: #c2185b; --tag-bg: rgba(233,30,140,0.12); --tag-color: #e91e8c; --emoji-bg: rgba(233,30,140,0.1); }
-  .sec-spell .section-emoji { background: rgba(233,30,140,0.1); }
-  .sec-spell .section-line { background: linear-gradient(90deg, #e91e8c, transparent); }
-  .sec-spell .section-title { color: #e91e8c; }
-
-  /* WEEKLY FOCUS BANNER */
-  .weekly-focus-banner {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    background: linear-gradient(135deg, #fff0f8, #fce4f6);
-    border: 2px solid #f48fb1;
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 18px;
-    box-shadow: 0 2px 8px rgba(233,30,140,0.1);
-  }
-  .wf-label { font-size: 0.9rem; font-weight: 700; color: #880e4f; }
-  .wf-word {
-    font-family: 'Bangers', cursive;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-    color: #c2185b;
-    background: white;
-    border: 2px solid #f48fb1;
-    border-radius: 10px;
-    padding: 4px 16px;
-    min-width: 120px;
-    text-align: center;
-  }
-
-  /* SPELLING & GRAMMAR SECTION */
-
-  .weekly-word-banner {
-    background: linear-gradient(135deg, rgba(233,30,140,0.08), rgba(233,30,140,0.04));
-    border: 2px solid rgba(233,30,140,0.25);
-    border-radius: 12px;
-    padding: 12px 18px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .weekly-word-label {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #c0156e;
-  }
-  .weekly-word-value {
-    font-family: 'Bangers', cursive;
-    font-size: 1.4rem;
-    letter-spacing: 2px;
-    color: #e91e8c;
-  }
-
-  .sec-spl { --accent: #e91e8c; --step-color: #c2185b; --tag-bg: rgba(233,30,140,0.12); --tag-color: #e91e8c; --emoji-bg: rgba(233,30,140,0.10); }
+  .sec-spl { --accent: #e91e8c; --step-color: #c2185b; --tag-bg: rgba(233,30,140,0.15); --tag-color: #c2185b; --emoji-bg: rgba(233,30,140,0.10); }
   .sec-spl .section-emoji { background: rgba(233,30,140,0.10); }
   .sec-spl .section-line { background: linear-gradient(90deg, #e91e8c, transparent); }
-  .sec-spl .section-title { color: #e91e8c; }
+  .sec-spl .section-title { color: #c2185b; }
+
 
   /* WEEKLY FOCUS BANNER */
   .weekly-focus-banner {
@@ -438,6 +384,8 @@ body {
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
   }
   .wf-label { font-size: 0.85rem; font-weight: 700; color: #c2185b; }
   .wf-word {
@@ -1173,7 +1121,6 @@ body {
       </div>
     </div>
   </div>
-</div>
 
   <!-- ===== SPELLING & PHONICS ===== -->
   <div class="section-wrapper sec-spl" id="sec-spl">
@@ -1351,6 +1298,8 @@ body {
   </div>
 
 
+
+</div>
 
 <!-- PIN MODAL -->
 <div class="modal-overlay" id="pin-modal">
