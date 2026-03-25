@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Girolemo's Investigation Station</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #ff6b1a;
+  --orange-dark: #d44e00;
+  --orange-light: #ff9a5c;
+  --yellow: #ffd600;
+  --yellow-dark: #c8a800;
+  --purple: #7c3aed;
+  --purple-light: #a78bfa;
+  --green: #16a34a;
+  --green-light: #4ade80;
+  --blue: #1d6fde;
+  --blue-light: #60a5fa;
+  --red: #dc2626;
+  --red-dark: #991b1b;
+  --bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-border: #e0e0f0;
+  --text: #1a1a2e;
+  --text-muted: #6666aa;
+  --shadow: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-hover: 0 8px 28px rgba(0,0,0,0.18);
+  --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #ffffff;
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1060 40%, #1a0a2e 100%);
+  padding: 32px 20px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--orange);
+}
+.header::before {
+  content: '⚡';
+  position: absolute;
+  font-size: 120px;
+  left: -20px; top: -10px;
+  opacity: 0.06;
+  line-height: 1;
+}
+.header::after {
+  content: '⚡';
+  position: absolute;
+  font-size: 120px;
+  right: -20px; bottom: -10px;
+  opacity: 0.06;
+  line-height: 1;
+}
+.header-name {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(2rem, 7vw, 3.8rem);
+  letter-spacing: 3px;
+  color: var(--yellow);
+  text-shadow: 0 0 20px rgba(255,214,0,0.5), 3px 3px 0 var(--orange-dark);
+  position: relative;
+  z-index: 1;
+}
+.header-sub {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+.adult-btn {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.8);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+.adult-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* TTS BAR */
+.tts-bar {
+  background: #f8f8ff;
+  border-bottom: 2px solid var(--card-border);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tts-label { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); }
+.speed-group { display: flex; gap: 4px; }
+.speed-btn {
+  background: #f0f0ff;
+  border: 1.5px solid var(--card-border);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #6655aa;
+  transition: all 0.2s;
+}
+.speed-btn.active, .speed-btn:hover { background: var(--orange); color: white; border-color: var(--orange); }
+.tts-hint { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+
+/* MAIN */
+.main { max-width: 980px; margin: 0 auto; padding: 24px 16px 0; }
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin: 36px 0 16px; padding: 0 4px;
+}
+.section-emoji {
+  font-size: 1.8rem; width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px; flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Bangers', cursive;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+.section-line { flex: 1; height: 2px; border-radius: 2px; }
+
+/* per-section colours */
+.sec-add { --accent: var(--orange); --step-color: var(--orange-dark); --tag-bg: rgba(255,107,26,0.2); --tag-color: var(--orange-light); --emoji-bg: rgba(255,107,26,0.15); }
+.sec-add .section-emoji { background: rgba(255,107,26,0.15); }
+.sec-add .section-line { background: linear-gradient(90deg, var(--orange), transparent); }
+.sec-add .section-title { color: var(--orange-light); }
+
+.sec-sub { --accent: var(--purple-light); --step-color: var(--purple); --tag-bg: rgba(124,58,237,0.2); --tag-color: var(--purple-light); --emoji-bg: rgba(124,58,237,0.15); }
+.sec-sub .section-emoji { background: rgba(124,58,237,0.15); }
+.sec-sub .section-line { background: linear-gradient(90deg, var(--purple-light), transparent); }
+.sec-sub .section-title { color: var(--purple-light); }
+
+.sec-nar { --accent: var(--green-light); --step-color: var(--green); --tag-bg: rgba(22,163,74,0.2); --tag-color: var(--green-light); --emoji-bg: rgba(22,163,74,0.15); }
+.sec-nar .section-emoji { background: rgba(22,163,74,0.15); }
+.sec-nar .section-line { background: linear-gradient(90deg, var(--green-light), transparent); }
+.sec-nar .section-title { color: var(--green-light); }
+
+.sec-msk { --accent: var(--blue-light); --step-color: var(--blue); --tag-bg: rgba(29,111,222,0.2); --tag-color: var(--blue-light); --emoji-bg: rgba(29,111,222,0.15); }
+.sec-msk .section-emoji { background: rgba(29,111,222,0.15); }
+.sec-msk .section-line { background: linear-gradient(90deg, var(--blue-light), transparent); }
+.sec-msk .section-title { color: var(--blue-light); }
+
+/* CARDS GRID */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+/* CARD */
+.inv-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--card-border);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.inv-card:hover {
+  border-color: var(--accent, var(--orange));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+.inv-card.open { border-color: var(--accent, var(--orange)); box-shadow: 0 0 0 2px var(--accent, var(--orange)), var(--shadow); }
+
+.card-top { padding: 14px 14px 10px; display: flex; gap: 10px; align-items: flex-start; }
+.card-emoji-wrap {
+  width: 46px; height: 46px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.card-info { flex: 1; }
+.card-tag {
+  font-size: 0.62rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  border-radius: 5px; padding: 2px 7px;
+  display: inline-block; margin-bottom: 5px;
+}
+.card-title { font-weight: 800; font-size: 0.92rem; line-height: 1.3; color: var(--text); }
+.card-desc { font-size: 0.8rem; color: var(--text-muted); padding: 0 14px 12px; font-weight: 600; line-height: 1.4; }
+.card-tap {
+  padding: 9px 14px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 0.8rem; font-weight: 700; color: var(--accent, var(--orange));
+  border-top: 1.5px solid var(--card-border);
+  transition: background 0.15s;
+}
+.card-tap:hover { background: rgba(0,0,0,0.02); }
+.tap-arrow { transition: transform 0.3s; }
+.inv-card.open .tap-arrow { transform: rotate(180deg); }
+
+/* STEPS PANEL */
+.steps-panel {
+  display: none;
+  padding: 14px;
+  background: #f7f7ff;
+  border-top: 1.5px solid var(--card-border);
+}
+.inv-card.open .steps-panel { display: block; }
+.steps-title { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 10px; color: var(--accent, var(--orange)); }
+.steps-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.steps-list li { display: flex; gap: 9px; align-items: flex-start; font-size: 0.86rem; font-weight: 600; line-height: 1.4; color: var(--text); }
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 900; flex-shrink: 0; color: white;
+}
+.card-tts-row { display: flex; gap: 8px; margin-top: 12px; margin-bottom: 4px; }
+.card-read-btn {
+  background: var(--accent, var(--orange));
+  color: white; border: none; border-radius: 20px;
+  padding: 6px 14px; font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.2s;
+}
+.card-read-btn:hover { opacity: 0.85; }
+.card-read-btn.reading { background: var(--red); }
+.download-btn {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 10px; background: #f0f0ff;
+  color: var(--text); border: 1.5px solid var(--card-border);
+  border-radius: 10px; padding: 7px 14px;
+  font-family: 'Nunito', sans-serif; font-size: 0.78rem;
+  font-weight: 700; cursor: pointer; transition: background 0.2s;
+}
+.download-btn:hover { background: #e0e0ff; }
+
+/* HIDDEN */
+.inv-card.hidden-inv { display: none; }
+.section-wrapper.all-hidden { display: none; }
+
+/* PIN MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,10,40,0.6); z-index: 100;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #ffffff; border: 2px solid var(--orange);
+  border-radius: 20px; padding: 28px 24px;
+  width: min(90vw, 360px); text-align: center;
+  position: relative; box-shadow: 0 0 40px rgba(255,107,26,0.3);
+}
+.modal-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
+.modal-title { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 4px; color: var(--orange-light); }
+.modal-sub { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 16px; }
+.pin-display {
+  font-size: 2rem; letter-spacing: 14px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: #f5f5ff; border-radius: 10px;
+  margin-bottom: 12px; border: 1.5px solid var(--card-border);
+  color: var(--orange-light); font-weight: 900;
+}
+.pin-error { color: var(--red); font-size: 0.82rem; font-weight: 700; min-height: 18px; margin-bottom: 8px; }
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.numpad-btn {
+  background: #f0f0ff; border: 1.5px solid var(--card-border);
+  border-radius: 10px; padding: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800;
+  color: var(--text); cursor: pointer; transition: all 0.15s;
+}
+.numpad-btn:hover { background: var(--orange); color: white; border-color: var(--orange); }
+.numpad-btn.del { color: var(--red); }
+.numpad-btn.del:hover { background: var(--red); color: white; border-color: var(--red); }
+
+/* TEACHER PANEL */
+.teacher-panel {
+  display: none; position: fixed; inset: 0;
+  background: #f5f5ff; z-index: 200;
+  overflow-y: auto; padding: 24px 16px 40px;
+}
+.teacher-panel.open { display: block; }
+.teacher-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; max-width: 780px; margin-left: auto; margin-right: auto;
+}
+.teacher-title { font-family: 'Bangers', cursive; font-size: 1.6rem; letter-spacing: 1px; color: var(--orange-light); }
+.panel-close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
+
+.teacher-section {
+  max-width: 780px; margin: 0 auto 24px;
+  background: #ffffff; border: 1.5px solid var(--card-border);
+  border-radius: var(--radius); padding: 20px;
+}
+.teacher-section h3 { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 6px; color: var(--orange-light); display: flex; align-items: center; gap: 8px; }
+.teacher-section .section-note { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; }
+
+/* per-topic teacher section */
+.topic-block { margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px; }
+.topic-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.topic-label {
+  font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topic-count { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); }
+
+.inv-select-list { display: flex; flex-direction: column; gap: 6px; }
+.inv-select-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 10px; border-radius: 8px;
+  border: 1.5px solid var(--card-border); cursor: pointer;
+  font-weight: 700; font-size: 0.84rem; color: var(--text);
+  transition: all 0.15s;
+}
+.inv-select-item:hover { background: rgba(0,0,0,0.02); }
+.inv-select-item.selected { border-color: var(--orange); background: #fff4ee; }
+.inv-select-item input { accent-color: var(--orange); width: 16px; height: 16px; }
+.inv-select-item.over-limit { opacity: 0.4; }
+
+.save-btn {
+  background: var(--orange); color: white; border: none;
+  border-radius: 10px; padding: 10px 20px;
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; margin-top: 14px; display: flex; align-items: center; gap: 7px;
+  transition: background 0.2s;
+}
+.save-btn:hover { background: var(--orange-dark); }
+.saved-msg { color: var(--green-light); font-size: 0.82rem; font-weight: 700; margin-top: 6px; display: none; }
+
+.curr-links p { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; line-height: 1.5; }
+
+.notes-list { display: flex; flex-direction: column; gap: 8px; }
+.note-item label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px; }
+.note-item textarea {
+  width: 100%; background: #f8f8ff;
+  border: 1.5px solid var(--card-border); border-radius: 8px;
+  padding: 7px 9px; font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem; resize: vertical; min-height: 48px;
+  color: var(--text); font-weight: 600; outline: none; transition: border-color 0.2s;
+}
+.note-item textarea:focus { border-color: var(--orange); }
+
+@media (max-width: 480px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .header-name { font-size: 1.8rem; }
+}
+
+  /* SPELLING SECTION */
+  .sec-spell { --accent: #e91e8c; --step-color: #c2185b; --tag-bg: rgba(233,30,140,0.12); --tag-color: #e91e8c; --emoji-bg: rgba(233,30,140,0.1); }
+  .sec-spell .section-emoji { background: rgba(233,30,140,0.1); }
+  .sec-spell .section-line { background: linear-gradient(90deg, #e91e8c, transparent); }
+  .sec-spell .section-title { color: #e91e8c; }
+
+  /* WEEKLY FOCUS BANNER */
+  .weekly-focus-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, #fff0f8, #fce4f6);
+    border: 2px solid #f48fb1;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(233,30,140,0.1);
+  }
+  .wf-label { font-size: 0.9rem; font-weight: 700; color: #880e4f; }
+  .wf-word {
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: #c2185b;
+    background: white;
+    border: 2px solid #f48fb1;
+    border-radius: 10px;
+    padding: 4px 16px;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  /* SPELLING & GRAMMAR SECTION */
+
+  .weekly-word-banner {
+    background: linear-gradient(135deg, rgba(233,30,140,0.08), rgba(233,30,140,0.04));
+    border: 2px solid rgba(233,30,140,0.25);
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .weekly-word-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #c0156e;
+  }
+  .weekly-word-value {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: #e91e8c;
+  }
+
+  .sec-spl { --accent: #e91e8c; --step-color: #c2185b; --tag-bg: rgba(233,30,140,0.12); --tag-color: #e91e8c; --emoji-bg: rgba(233,30,140,0.10); }
+  .sec-spl .section-emoji { background: rgba(233,30,140,0.10); }
+  .sec-spl .section-line { background: linear-gradient(90deg, #e91e8c, transparent); }
+  .sec-spl .section-title { color: #e91e8c; }
+
+  /* WEEKLY FOCUS BANNER */
+  .weekly-focus-banner {
+    background: linear-gradient(135deg, #fff0f8, #ffe8f5);
+    border: 2px solid #e91e8c;
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .wf-label { font-size: 0.85rem; font-weight: 700; color: #c2185b; }
+  .wf-word {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: #e91e8c;
+    background: white;
+    border: 2px solid #e91e8c;
+    border-radius: 8px;
+    padding: 2px 14px;
+  }
+
+  /* TEACHER: weekly focus input */
+  .wf-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .wf-input {
+    background: white;
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    outline: none;
+    flex: 1;
+    min-width: 180px;
+    transition: border-color 0.2s;
+  }
+  .wf-input:focus { border-color: #e91e8c; }
+  .wf-save-btn {
+    background: #e91e8c; color: white; border: none;
+    border-radius: 8px; padding: 8px 16px;
+    font-family: 'Nunito', sans-serif; font-size: 0.88rem;
+    font-weight: 800; cursor: pointer; transition: background 0.2s;
+  }
+  .wf-save-btn:hover { background: #c2185b; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="adult-btn" onclick="openPin()">🔒 Adult Settings</button>
+  <div class="header-name">⚡ Girolemo's Finding out Station</div>
+  <div class="header-sub">Pick a topic, tap a card, and follow your steps — you've got this!</div>
+</div>
+
+<div class="tts-bar">
+  <span class="tts-label">🔊 Reading speed:</span>
+  <div class="speed-group">
+    <button class="speed-btn" id="spd-slow" onclick="setSpeed(0.7,'slow')">Slow</button>
+    <button class="speed-btn active" id="spd-normal" onclick="setSpeed(1,'normal')">Normal</button>
+    <button class="speed-btn" id="spd-fast" onclick="setSpeed(1.4,'fast')">Fast</button>
+  </div>
+  <span class="tts-hint">— tap 🔊 on any card to hear it read aloud</span>
+</div>
+
+<div class="main" id="main-content">
+
+  <div class="section-wrapper sec-add" id="sec-add">
+    <div class="section-header">
+      <div class="section-emoji">⚡</div>
+      <div class="section-title">Adding</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid">
+      <div class="inv-card sec-add" data-id="add1">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚡</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Anime Power Battle</div>
+          </div>
+        </div>
+        <div class="card-desc">Add up character power scores to find out who wins the battle — show all your working!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw 2 anime characters and give each one 3 power scores (numbers up to 20).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add the 3 scores together for each character. Show your adding steps.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Circle the character with the biggest whole amount — they win!</li><li><span class="step-num" style="background:var(--step-color)">4</span>Now make your own battle with bigger numbers (up to 50). Who wins this time?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My winner had __ points. I worked this out by…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Power Battle',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add2">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍣</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Sushi Restaurant Bill</div>
+          </div>
+        </div>
+        <div class="card-desc">You are running a sushi restaurant! Add up your customers orders and find the whole amount.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw a sushi menu with 6 items. Give each one a price from 1 to 9.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 3 "orders" — each order has 3 items on it.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Add up each order whole amount. Show how you counted on or used number facts.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Which order cost the most? Which cost the least?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the difference between the biggest and smallest order.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sushi Restaurant Bill',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add3">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎮</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">FNAF Night Score</div>
+          </div>
+        </div>
+        <div class="card-desc">Add up your staying alive points across the nights at Freddy's — can you beat the high score?</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write Night 1 to Night 5. Give each night a score between 10 and 30.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add Night 1 + Night 2 together first. Write the answer.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Now add Night 3 to your whole amount. Keep going until all 5 nights are added.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Draw a scoreboard showing each night and a running whole amount.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My 5-night whole amount is __. I know this is right because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('FNAF Night Score',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add4">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🌸</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Anime Sticker Collection</div>
+          </div>
+        </div>
+        <div class="card-desc">Count up your sticker group using adding — how many do you have altogether?</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Imagine you have 4 types of anime stickers. Write a number for each type (up to 20).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add the first 2 types together. Write a maths sum: __ + __ = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>Add the next 2 types. Write another maths sum.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Now add your two whole amounts together to get the grand whole amount.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I have __ stickers altogether. I checked by…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Sticker Collection',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add5">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">👾</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">FNAF Parts Counter</div>
+          </div>
+        </div>
+        <div class="card-desc">Help fix Freddy! Add up all the robot parts to see if you have enough.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write 4 types of robot parts (like eyes, ears, arms, legs). Write how many of each — use numbers up to 15.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add the first two parts together. Show your working.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Add the last two parts together. Show your working.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Add both answers to get the whole amount number of parts.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Freddy needs __ parts. I have __ parts. I have enough / not enough because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('FNAF Parts Counter',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add6">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍱</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Bento Box Builder</div>
+          </div>
+        </div>
+        <div class="card-desc">Design a bento box lunch and add up how many pieces of food are inside!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw a bento box with 4 sections. Draw food in each section.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Count and write how many pieces are in each section.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write a maths sum adding all 4 sections: __ + __ + __ + __ = __</li><li><span class="step-num" style="background:var(--step-color)">4</span>Try to make a bento box that has exactly 20 pieces. How did you do it?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I knew my whole amount was right because I…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Bento Box Builder',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add7">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚔️</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Hero Team Whole amount</div>
+          </div>
+        </div>
+        <div class="card-desc">Build an anime hero team and add up their special move counts to find your team whole amount.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw 3 anime heroes. Give each hero 2 special moves with a power number (1–10 each).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add the 2 move powers for each hero to get their personal score.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Add all 3 hero scores together to get your team whole amount.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Add 10 more to your team whole amount. Write the new maths sum.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My team's whole amount power is __. Adding 10 made it __."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Hero Team Whole amount',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add8">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🔦</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Flashlight Battery Check</div>
+          </div>
+        </div>
+        <div class="card-desc">The power is out at Freddy's! Add up how many hours of battery you have left.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write 3 different flashlights with battery hours: one has less than 5, one has 5–10, one has more than 10.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add the first two flashlight hours together.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Add the third flashlight. Write the full maths sum.</li><li><span class="step-num" style="background:var(--step-color)">4</span>If you need 20 hours to survive — do you have enough? Write how you know.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Invent one more flashlight that gives you exactly 20 hours whole amount.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Flashlight Battery Check',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add9">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎌</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Anime Episode Marathon</div>
+          </div>
+        </div>
+        <div class="card-desc">You are watching anime all day! Add up the episode minutes to plan your long session.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Choose 3 shows. Write how many minutes each episode is (pick from: 10, 12, 15, 20, 25).</li><li><span class="step-num" style="background:var(--step-color)">2</span>If you watch 2 episodes of Show 1, how many minutes is that? Write the maths sum.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Do the same for Show 2 and Show 3.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Add all three whole amounts together. How long is your whole long session?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My long session is __ minutes. That is about __ hours because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Episode Marathon',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-add" data-id="add10">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍜</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Adding</span>
+            <div class="card-title">Ramen Thing you need Count</div>
+          </div>
+        </div>
+        <div class="card-desc">Cook the perfect ramen! Add up your thing you needs to make sure you have enough for everyone.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write a ramen recipe with 5 thing you needs. Give each one a amount (number of pieces/cups).</li><li><span class="step-num" style="background:var(--step-color)">2</span>You are cooking for 2 people — double every amount by adding it to itself.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write each doubled maths sum: __ + __ = __</li><li><span class="step-num" style="background:var(--step-color)">4</span>Add up all 5 doubled amounts to find the whole amount amount of thing you needs.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "For 2 people I need __ things altogether. I worked this out by…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Ramen Thing you need Count',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-wrapper sec-sub" id="sec-sub">
+    <div class="section-header">
+      <div class="section-emoji">➖</div>
+      <div class="section-title">Subtraction</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid">
+      <div class="inv-card sec-sub" data-id="sub1">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">💀</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">FNAF Jumpscare Counter</div>
+          </div>
+        </div>
+        <div class="card-desc">Count down how many lives you have left — can you survive until morning?</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 10 lives. Draw 10 stars on your page.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Pick a number between 1 and 3. Take away that many lives each round.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the maths sum for each round: 10 - __ = __, then __ - __ = __</li><li><span class="step-num" style="background:var(--step-color)">4</span>Keep going until you run out or reach 0. How many rounds did you survive?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I lasted __ rounds. I had __ lives left / I ran out on round __."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('FNAF Jumpscare Counter',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub2">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍣</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Sushi Plate Eater</div>
+          </div>
+        </div>
+        <div class="card-desc">Watch the sushi plates disappear! Subtract the eaten ones and find out what is left.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 20 sushi pieces on the plate. Draw them.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write a story: "I ate __ pieces." Cross them off and write 20 - __ = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>Then eat some more: write a second taking away from your new whole amount.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Then eat a third amount. Write the final maths sum.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I started with 20 and now I have __ left. I checked by adding back: __ + __ + __ + __ = 20."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sushi Plate Eater',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub3">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚡</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Anime HP Tracker</div>
+          </div>
+        </div>
+        <div class="card-desc">Track your character's HP in battle — each hit takes HP away. Can they survive?</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Give your character 30 HP. Write it at the top.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 4 attacks they receive: each attack does between 3 and 8 damage.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Subtract each attack one at a time. Write the maths sum each time.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Did your character survive (do they still have HP above 0)?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My character started with 30 HP and finished with __ HP."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime HP Tracker',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub4">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎒</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Packing for School</div>
+          </div>
+        </div>
+        <div class="card-desc">Pack your school bag — take out what you don't need and count what is left.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 15 items in your bag. Write or draw them.</li><li><span class="step-num" style="background:var(--step-color)">2</span>You don't need 4 of them. Cross them out. Write 15 - 4 = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>Oops — you also forgot 3 more things at home. Write the next taking away.</li><li><span class="step-num" style="background:var(--step-color)">4</span>How many items do you actually have? Is it enough for school?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I started with 15 items. After taking away __ and __, I have __ left."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Packing for School',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub5">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">👾</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Power Outage!</div>
+          </div>
+        </div>
+        <div class="card-desc">The power meter at Freddy's is dropping! Subtract the power used each hour.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 100 power. Write it as a big number at the top.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Each hour uses some power: Hour 1 uses 15, Hour 2 uses 20, Hour 3 uses 25.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Subtract each hour's usage one at a time. Show your working.</li><li><span class="step-num" style="background:var(--step-color)">4</span>How much power is left after 3 hours?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Will the power last until 6am? Yes or No — because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Power Outage!',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub6">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🌸</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Anime Card Trade</div>
+          </div>
+        </div>
+        <div class="card-desc">You are swapping anime cards — sometimes you give some away and sometimes you get some back!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 25 cards. Write that number.</li><li><span class="step-num" style="background:var(--step-color)">2</span>You trade away 7 cards. Write 25 - 7 = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>You trade away 5 more. Write the next taking away.</li><li><span class="step-num" style="background:var(--step-color)">4</span>You find 3 old ones in your bag — add those back. Write __ + 3 = __</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I started with 25 cards and now have __. I can check this by…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Card Trade',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub7">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍱</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Lunchbox Leftovers</div>
+          </div>
+        </div>
+        <div class="card-desc">See what's left in the lunchbox after eating — subtract and find the leftovers!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw a lunchbox with 4 foods and write how many of each (e.g. 6 grapes, 4 crackers).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write how many of each food you eat. It must be less than what you started with.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the taking away for each food: __ - __ = __</li><li><span class="step-num" style="background:var(--step-color)">4</span>Add up all your leftovers. How much food is still in the box?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I ate most of my lunch. I still have __ things left."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Lunchbox Leftovers',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub8">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎮</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Chromebook Battery Drain</div>
+          </div>
+        </div>
+        <div class="card-desc">Watch the Chromebook battery go down — subtract each hour and see when it runs out.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Start with 80% battery. Write it down.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Each lesson uses some battery: Lesson 1 = 15%, Lesson 2 = 20%, Lesson 3 = 10%.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Subtract each lesson's usage one at a time. Write each maths sum.</li><li><span class="step-num" style="background:var(--step-color)">4</span>How much battery is left after 3 lessons?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I need 20% to last the whole school day. Do I have enough? Yes or No — because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Chromebook Battery Drain',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub9">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎌</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Anime Countdown</div>
+          </div>
+        </div>
+        <div class="card-desc">Count down the episodes left to watch in your favourite anime series!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Pick a series with 24 episodes. Write 24.</li><li><span class="step-num" style="background:var(--step-color)">2</span>You watched 6 episodes on Monday. Write 24 - 6 = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>You watched 5 on Tuesday and 4 on Wednesday. Write each taking away.</li><li><span class="step-num" style="background:var(--step-color)">4</span>How many episodes are left?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I have __ episodes left. It will take me about __ more days to finish if I watch __ each day."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Countdown',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-sub" data-id="sub10">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🔢</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Subtraction</span>
+            <div class="card-title">Number Line Detective</div>
+          </div>
+        </div>
+        <div class="card-desc">Use a number line to solve taking away problems — jump back and find the answer!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw a number line from 0 to 30.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Start at 28. Jump back 9. Where do you land? Write 28 - 9 = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>Start at 25. Jump back 7. Write the maths sum.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Make up 3 of your own taking away problems using the number line.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Using a number line helps me because I can see the jumps. The hardest one was __ because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Number Line Detective',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-wrapper sec-nar" id="sec-nar">
+    <div class="section-header">
+      <div class="section-emoji">✍️</div>
+      <div class="section-title">Story Writing</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid">
+      <div class="inv-card sec-nar" data-id="nar1">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚡</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">My Anime Hero Story</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a short story about YOUR own anime hero going on their very first adventure.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Give your hero a name, one special power, and one weakness. Draw them quickly.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write: "One day, [hero name] was…" — describe where your hero is in 1 or 2 sentences.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the PROBLEM your hero faces. Use the word "suddenly" to start it.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how your hero solves the problem using their power.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write an ending sentence. Re-read your story — does it make sense from start to finish?</li></ul>
+          <button class="download-btn" onclick="downloadSummary('My Anime Hero Story',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar2">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">👾</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">Night at Freddy's</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a spooky story about a night guard surviving one night at Freddy's Pizza.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Name your night guard and write where they are (the security office).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write what they hear or see at midnight. Use a describing word (describing word) in every sentence.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the scariest moment of the night — what happens?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how the night guard gets through to 6am.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Read your story back quietly — did you use describing words? Underline them all.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Night at Freddys',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar3">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍣</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">The Sushi Chef's Secret</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a story about a young chef who discovers a magical sushi recipe.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Introduce your chef in 1–2 sentences. Where are they? What do they look like?</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write how they find the secret recipe. Start this sentence with "Hidden inside…"</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write what the magical sushi does when someone eats it.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write a problem that happens because of the magic.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write how the chef fixes the problem. End with one sentence that wraps the story up.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('The Sushi Chefs Secret',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar4">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎮</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">Lost in the Game</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a story about a kid who gets sucked inside their favourite video game.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write the first sentence: your character is playing a game when something strange happens.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Describe what the game world looks, sounds, and feels like. Use all 3 senses.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the biggest challenge your character faces inside the game.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how they try to solve it. Do they get it right straight away? (Tip: it's more fun if they don't!)</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the ending. How do they get home? Re-read and check every sentence starts with a capital letter.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Lost in the Game',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar5">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🌸</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">The Friendship Scroll</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a story about two anime characters who start as enemies but become friends.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Introduce Character 1 and Character 2 in one sentence each.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write why they don't like each other at first.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the moment when something changes — they have to work together.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how they solve a problem together. Show how they start to trust each other.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the final scene showing they are now friends. What do they say to each other?</li></ul>
+          <button class="download-btn" onclick="downloadSummary('The Friendship Scroll',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar6">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">📝</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">Diary of a Night Guard</div>
+          </div>
+        </div>
+        <div class="card-desc">Write 3 diary entries from a night guard working at Freddy's — each night gets scarier!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Night 1 diary: Write 3 sentences. Things seem normal but something feels a little wrong.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Night 2 diary: Write 4 sentences. Something strange definitely happens. Use "I felt…" and "I heard…"</li><li><span class="step-num" style="background:var(--step-color)">3</span>Night 3 diary: Write 5 sentences. The scariest night yet! End on a a surprise ending that makes you want to know what happens next.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Re-read all 3 entries. Does each one get scarier than the last?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Add a title to each entry (e.g. "Night 1 — Something's Not Right") and check your full stops.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Diary of a Night Guard',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar7">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎌</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">The New Student</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a story about a new student who arrives at an anime school and has to fit in.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Introduce the new student. Where did they come from? Why are they nervous?</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write the first thing that goes wrong on their first day.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write how another character helps them.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write a moment where the new student shows something special about themselves.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the last moment of the day. How does the new student feel? Use a feeling word like happy, relieved, or excited.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('The New Student',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar8">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍜</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">The Food Fight</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a funny story about a food fight that breaks out in a Japanese school canteen.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Set the scene: write where it is and who is there. Make it sound busy and noisy.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write how the food fight starts — use the word "accidencount using lines" somewhere.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the most chaotic moment using at least 3 action verbs (e.g. splattered, ducked, slipped).</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how a teacher or cook tries to stop it.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the funny ending. Is anyone in trouble? Re-read and add one more funny detail.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('The Food Fight',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar9">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">💻</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">The Chromebook That Came Alive</div>
+          </div>
+        </div>
+        <div class="card-desc">Write a story about a Chromebook that suddenly starts talking to its owner.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write the opening: your character opens their Chromebook and it says something unexpected.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write a conversation between the character and the Chromebook. Use speech marks: "…"</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the problem the Chromebook needs help solving.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how the character and Chromebook work together.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write the ending. Does the Chromebook go back to normal? Go back and circle all your speech marks " ". Did you open and close them each time?</li></ul>
+          <button class="download-btn" onclick="downloadSummary('The Chromebook That Came Alive',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-nar" data-id="nar10">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⭐</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Story Writing</span>
+            <div class="card-title">My Own Adventure</div>
+          </div>
+        </div>
+        <div class="card-desc">Write your own story about anything you love — you choose the characters, setting, and problem!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Choose your setting, main character, and problem. Write them down before you start.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write a beginning that grabs the reader — start with action or dialogue, not "One day…"</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the middle: show the problem getting worse before it gets better.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write how the character solves the problem. Make sure it makes sense!</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write a satisfying ending. Re-read the whole story — fix any parts that are confusing.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('My Own Adventure',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-wrapper sec-msk" id="sec-msk">
+    <div class="section-header">
+      <div class="section-emoji">🔢</div>
+      <div class="section-title">Maths Skills</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid">
+      <div class="inv-card sec-msk" data-id="msk1">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🔢</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Numbers</span>
+            <div class="card-title">Big and Small Numbers</div>
+          </div>
+        </div>
+        <div class="card-desc">Explore numbers up to 100 — read them, write them, order them, and find them everywhere.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write every number you can see in this room (on books, posters, your ruler, anywhere!).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Put your numbers in order from smallest to biggest.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Circle any numbers bigger than 50. Put a square around any smaller than 20.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write the number that comes before and after each circled number.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The biggest number I found was __. The smallest was __."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Big and Small Numbers',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk2">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎯</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Place Value</span>
+            <div class="card-title">Tens and Ones with Anime</div>
+          </div>
+        </div>
+        <div class="card-desc">Use tens and ones to understand how two-number numbers are built.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw 10 anime characters in a row. That row = 1 ten.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Draw 3 rows of 10 plus 7 extras. How many altogether? Write 3 tens + 7 ones = __</li><li><span class="step-num" style="background:var(--step-color)">3</span>For each number, write how many tens and how many ones: 24, 31, 45, 58, 62.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Make the biggest 2-number number you can using the numbers 3 and 7. Now make the smallest.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The number 46 means __ tens and __ ones. I know this because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Tens and Ones with Anime',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk3">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍣</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Problem Solving</span>
+            <div class="card-title">Sushi Sharing Problems</div>
+          </div>
+        </div>
+        <div class="card-desc">Solve sharing problems using sushi — can you divide the rolls fairly?</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw 12 sushi rolls. Share them equally between 2 friends. How many each?</li><li><span class="step-num" style="background:var(--step-color)">2</span>Draw 15 sushi rolls. Share equally between 3 friends. How many each?</li><li><span class="step-num" style="background:var(--step-color)">3</span>Try to share 10 sushi rolls between 3 people. Can everyone get the same amount? What is left over?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Make up your own sharing problem with sushi. Write it as a sentence AND a maths sum.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Sharing is like taking away over and over because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sushi Sharing Problems',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk4">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">💡</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Problem Solving</span>
+            <div class="card-title">How Many Ways?</div>
+          </div>
+        </div>
+        <div class="card-desc">Find all the different ways to make a number — there is always more than one!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Choose the number 10. Write as many ways as you can to make 10 (e.g. 5+5, 3+7, 10+0…).</li><li><span class="step-num" style="background:var(--step-color)">2</span>How many ways did you find? Write the whole amount.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Now do the same for the number 20. Can you find more ways than for 10?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Circle your favourite maths sum. Write why you like it.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I found __ ways to make 20. How do I know I got them all? Because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('How Many Ways?',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk5">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">📊</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Data</span>
+            <div class="card-title">Tally Chart Champion</div>
+          </div>
+        </div>
+        <div class="card-desc">Collect information about something you love and display it in a count using lines chart and graph.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Choose something to count — e.g. types of anime moves, FNAF characters, sushi types.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Make a count using lines chart with at least 4 categories. Count at least 20 things whole amount.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Draw a bar chart of your results. Label the the lines along the edges of a graph.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write 2 sentences about what your graph shows.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The most popular was __ with __ counts using lines. I know my graph is correct because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Tally Chart Champion',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk6">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎮</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Problem Solving</span>
+            <div class="card-title">FNAF Maths Missions</div>
+          </div>
+        </div>
+        <div class="card-desc">Solve maths word problems set inside the world of FNAF.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Problem 1: Freddy has 14 cupcakes. He gives 6 away. How many are left? Show your working.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Problem 2: There are 4 FNAF robots. Each one has 7 buttons. How many buttons are there altogether? Show your working.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Problem 3: The power starts at 50. It goes down 8 each hour. How much after 3 hours?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Problem 4: Make up your own FNAF maths problem and solve it.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The hardest problem was __ because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('FNAF Maths Missions',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk7">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⏰</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Time</span>
+            <div class="card-title">What Time Is It?</div>
+          </div>
+        </div>
+        <div class="card-desc">Read clocks, tell the time, and solve time problems using things you do every day.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw clock faces showing: 3 o'clock, half past 6, quarter past 9, quarter to 2.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write what you are usually doing at each of those times.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write: "School starts at __ and finishes at __. That is __ hours."</li><li><span class="step-num" style="background:var(--step-color)">4</span>If a show starts at 4 o'clock and goes for 30 minutes, what time does it finish? Draw the clock.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write 2 more of your own time problems and solve them.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('What Time Is It?',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk8">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">💰</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Money</span>
+            <div class="card-title">Anime Shop</div>
+          </div>
+        </div>
+        <div class="card-desc">Set up your own anime shop and work out how much things cost and how much change to give back.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Draw 5 items in your shop. Give each one a price between $1 and $10.</li><li><span class="step-num" style="background:var(--step-color)">2</span>A customer buys 2 items. Write the addition to find the whole amount.</li><li><span class="step-num" style="background:var(--step-color)">3</span>They pay with $20. Write the taking away to find the change.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Create 3 different shopping problems using your shop items.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The most expensive item is $__. The cheapest is $__. The difference is $__."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Anime Shop',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk9">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">📏</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Measurement</span>
+            <div class="card-title">Measure It!</div>
+          </div>
+        </div>
+        <div class="card-desc">Use a ruler to measure things at your desk and practise comparing lengths.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Measure 6 things at your desk in centimetres. Record in a table.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Order them from shortest to longest.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Find the difference between the longest and shortest item.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Draw a bar chart of your 6 measurements.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The longest was __ cm and the shortest was __ cm. The difference is __ cm."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Measure It!',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-msk" data-id="msk10">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🧩</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Problem Solving</span>
+            <div class="card-title">Missing Number Mysteries</div>
+          </div>
+        </div>
+        <div class="card-desc">Find the missing numbers in equations — become a maths detective!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Solve these: __ + 5 = 12 and 9 + __ = 15. Show how you worked it out.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Solve these: 20 - __ = 13 and __ - 7 = 8. Show your working.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write 3 of your own missing number sums. Try using take away to make them harder.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Now solve your own sums as if you are seeing them for the first time.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "To find a missing number I… (explain what you do, step by step)."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Missing Number Mysteries',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ===== SPELLING & PHONICS ===== -->
+  <div class="section-wrapper sec-spell" id="sec-spell">
+    <div class="section-header">
+      <div class="section-emoji">🔤</div>
+      <div class="section-title">Spelling &amp; Grammar</div>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- WEEKLY FOCUS BANNER -->
+    <div class="weekly-focus-banner" id="weekly-focus-banner">
+      <span class="wf-label">⭐ This week's spelling sound or word:</span>
+      <span class="wf-word" id="wf-display">Ask your teacher!</span>
+    </div>
+
+    <div class="cards-grid">
+        </div>
+        <div class="card-desc">Go on a hunt for your spelling sound — find it hiding in words all around you!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Look at this week's sound in the yellow box at the top of the page.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Open a book and find 5 words that have that sound in them. Write them down.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Circle where the sound is hiding in each word (at the start, middle, or end?).</li><li><span class="step-num" style="background:var(--step-color)">4</span>Now think of 3 more words with that sound that are NOT in the book.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My sound can hide at the start / middle / end of a word. Here is my proof: …"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sound Hunter',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Use your spelling sound to build as many words as you can — go for a big score!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your spelling sound from the yellow box at the top.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Add different letters before or after your sound to make new words (e.g. if your sound is "igh" try: night, light, fight).</li><li><span class="step-num" style="background:var(--step-color)">3</span>Try to make at least 6 different words.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Put a tick next to every word you are sure is spelled right.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write your 3 favourite words in a sentence each. Check every sentence starts with a capital letter.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Build-a-Word',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Use the best spelling trick there is — practise your words the right way!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your 5 spelling words for this week from the yellow box.</li><li><span class="step-num" style="background:var(--step-color)">2</span>LOOK at the first word carefully for 5 seconds.</li><li><span class="step-num" style="background:var(--step-color)">3</span>SAY it out loud (or quietly to yourself). COVER it with your hand.</li><li><span class="step-num" style="background:var(--step-color)">4</span>WRITE it from memory. CHECK — did you get it right? Put a tick or fix it.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Do all 5 words. Then try writing them all again with no peeking at all!</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Look, Say, Cover, Write, Check',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Sort words into groups by their sounds — like a word sorting game!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your spelling sound from the yellow box at the top.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 8 words — some with your sound, some without.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Draw two columns: "Has the sound" and "Does not have the sound."</li><li><span class="step-num" style="background:var(--step-color)">4</span>Sort all 8 words into the right column.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The tricky one was ___ because the sound is hidden by ___."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sort the Sounds',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Use all your spelling words from this week inside a short story about anime or FNAF!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your 5 spelling words for this week from the yellow box.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write a short story (5 sentences) using ALL 5 words somewhere in it.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Underline each spelling word every time it appears in your story.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check: did you use every word at least once? Add any missing ones.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Read your story back. Does it make sense? Fix anything that sounds odd.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Spelling in a Story',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Hunt for capital letters in real writing — then practise using them correctly yourself.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Open any book to any page. Find and write down 5 sentences.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Circle every capital letter you find. Why is each one there? Write the reason next to it.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Common reasons: start of sentence, name of a person or place, the word "I".</li><li><span class="step-num" style="background:var(--step-color)">4</span>Now write 4 sentences of your own. Make sure you use capital letters in the right spots.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Swap your work with your past self — re-read something you wrote earlier and fix any missing capital letters.</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Capital Letter Detective',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Every sentence needs a full stop at the end — practise spotting missing ones and adding them in.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write these words as proper sentences and add full stops: "freddy has five buttons" and "the sushi is very tasty" and "my hero can fly".</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 5 of your own sentences about anything you like. Leave the full stops out on purpose.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Wait 1 minute, then go back and add all the full stops in.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check: does each sentence start with a capital and end with a full stop or ? or !</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I remembered to add ___ full stops. The one I nearly forgot was ___."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Full Stop Fixer',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Make your sentences more exciting by using the right punctuation at the end.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Learn the 3 sentence endings: . (full stop) ? (question mark) ! (exclamation mark).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 3 sentences that end with a full stop, 3 that end with a question mark, and 3 that end with an exclamation mark.</li><li><span class="step-num" style="background:var(--step-color)">3</span>All 9 sentences must be about anime, FNAF, or sushi.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Read them back — do the question ones sound like questions? Do the exciting ones sound exciting?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Question marks go at the end of a sentence when… Exclamation marks go when…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sentence Punch-Up!',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Practise using speech marks so your reader always knows who is talking.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Copy this sentence and add speech marks in the right place: I am going to survive the night said the guard.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 3 short conversations between 2 characters. Each character says 1 thing.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Remember: "What they say" said the person. — speech marks go around the exact words.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check: did you open AND close the speech marks each time?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Speech marks show us ___ . I open them before the first word and close them ___."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Who Said That?',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+        </div>
+        <div class="card-desc">Use joining words to make your sentences longer and more interesting.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Learn these joining words: and, but, so, because, then, when, if.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 5 short sentences about anything. Each one should only have one idea.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Now join each short sentence to another idea using a joining word from the list.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check: does each joined sentence make sense when you read it out loud?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "My favourite joining word is ___ because when I use it my sentences sound ___."</li></ul>
+          <button class="download-btn" onclick="downloadSummary('Sentence Connectors',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section-wrapper sec-spl" id="sec-spl">
+    <div class="section-header">
+      <div class="section-emoji">🔤</div>
+      <div class="section-title">Spelling &amp; Grammar</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="weekly-focus-banner" id="weekly-focus-banner" style="display:none">
+      <span class="wf-label">📌 This week's focus:</span>
+      <span class="wf-word" id="wf-display"></span>
+    </div>
+    <div class="cards-grid">
+      <div class="inv-card sec-spl" data-id="spl1">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🔤</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Spelling</span>
+            <div class="card-title">My Word of the Week</div>
+          </div>
+        </div>
+        <div class="card-desc">Use your class spelling focus this week to do these fun word tasks.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your focus word 3 times. Say each sound out loud as you write it.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Break the word into sounds using dots: e.g. r•ai•n. How many sounds does it have?</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write a sentence using the word. Make it about anime, FNAF, or sushi!</li><li><span class="step-num" style="background:var(--step-color)">4</span>Draw a picture that shows what the word means.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Cover the word and write it from memory. Check — did you get it right?</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'My Word of the Week\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl2">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚡</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Word Building</span>
+            <div class="card-title">Build It, Break It</div>
+          </div>
+        </div>
+        <div class="card-desc">Pull your focus word apart and put it back together — the more you look at it, the easier it is to spell!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your focus word in big letters across the middle of your page.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Circle any smaller words hiding inside it (e.g. "together" has "to", "get", "her").</li><li><span class="step-num" style="background:var(--step-color)">3</span>Count the letters. Count the sounds. Are they the same number? Why or why not?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write the word forwards. Now write it backwards. Does it look strange?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write your focus word in a sentence about a FNAF character.</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Build It, Break It\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl3">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍣</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Word Families</span>
+            <div class="card-title">Words That Sound the Same</div>
+          </div>
+        </div>
+        <div class="card-desc">Find other words that have the same sound pattern as your focus word this week.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your focus word. Underline the tricky part — the bit you might forget.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Think of 3 other words that have the same sound in them. Write them down.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write one sentence using two of your rhyming or pattern words.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Draw a word family tree — your focus word at the top, the other words as branches.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Choose the hardest word from your list. Write it 5 times without looking.</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Words That Sound the Same\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl4">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">👾</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Phonics Hunt</span>
+            <div class="card-title">Sound Spotter</div>
+          </div>
+        </div>
+        <div class="card-desc">Go hunting for your focus sound hiding in words all around you!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your focus sound or letter pattern at the top of your page.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Look around the room — find 5 words that have that sound in them. Write them down.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Open any book to any page. Find 3 more words with that sound. Write the whole sentence they are in.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Sort your words: does the sound come at the START, MIDDLE, or END of the word?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "I found the sound __ times. The trickiest word was __ because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Sound Spotter\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl5">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🎮</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Spelling</span>
+            <div class="card-title">Spell It Your Way</div>
+          </div>
+        </div>
+        <div class="card-desc">Use fun tricks to help your brain remember how to spell your focus word.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write your focus word. Then write it again with each vowel in a different colour.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Make up a silly sentence where each letter of the word starts a new word (e.g. SAID = Snakes Are In Disguise).</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write the word in big bubble letters and decorate it.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write the word using only capital letters. Then only lower case. Which looks easier to read?</li><li><span class="step-num" style="background:var(--step-color)">5</span>Close your eyes and picture the word. Open them and write it. Did you get it right?</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Spell It Your Way\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl6">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🌸</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Grammar</span>
+            <div class="card-title">Full Stops and Capital Letters</div>
+          </div>
+        </div>
+        <div class="card-desc">Make sure every sentence you write starts and ends the right way!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write 3 sentences about your favourite anime. Check each one starts with a CAPITAL letter.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Check each sentence ends with a full stop . or a question mark ? or an exclamation mark !</li><li><span class="step-num" style="background:var(--step-color)">3</span>Find a sentence in your book that uses an exclamation mark. Copy it out. Why did the author use it?</li><li><span class="step-num" style="background:var(--step-color)">4</span>Write 2 sentences about FNAF. One should be a statement. One should be a question.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Re-read all your sentences. Fix any that are missing a capital letter or full stop.</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Full Stops and Capital Letters\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl7">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">🍜</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Grammar</span>
+            <div class="card-title">Describing Words</div>
+          </div>
+        </div>
+        <div class="card-desc">Add describing words to your sentences to make them more interesting to read.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write a boring sentence: "The robot walked." Now add a describing word: "The rusty robot walked."</li><li><span class="step-num" style="background:var(--step-color)">2</span>Write 4 sentences about sushi. Every sentence must have at least one describing word.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Go back and underline every describing word you used.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Try to swap 2 of your describing words for more interesting ones. Use a word wall or ask your teacher for ideas.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "Describing words make writing better because they help the reader to…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Describing Words\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl8">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">⚔️</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Grammar</span>
+            <div class="card-title">Speech Marks</div>
+          </div>
+        </div>
+        <div class="card-desc">Learn how to show when a character is talking by using the right punctuation.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Find a page in your book where a character is speaking. Copy one line out exactly.</li><li><span class="step-num" style="background:var(--step-color)">2</span>Look at where the speech marks go. Write the rule: speech marks go __ the talking words.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Write a conversation between 2 anime characters. Write at least 4 lines of talking.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check every talking part has opening " and closing " speech marks.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Read your conversation aloud quietly. Does it sound like two different people talking?</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Speech Marks\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl9">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">📝</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Spelling</span>
+            <div class="card-title">My Spelling Notebook</div>
+          </div>
+        </div>
+        <div class="card-desc">Build your own personal spelling book with words you find tricky — it will help you all year!</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Write down 5 words you often spell wrong. Look up the correct spelling for each.</li><li><span class="step-num" style="background:var(--step-color)">2</span>For each word, write: the word, one thing about it (e.g. silent letter, double letter), and one sentence.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Use the Look, Cover, Write, Check method: look at the word, cover it, write it, check it.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Did you get them all right? Circle any you still got wrong and try again.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Write: "The word I find hardest to spell is __ because…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'My Spelling Notebook\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+      <div class="inv-card sec-spl" data-id="spl10">
+        <div class="card-top">
+          <div class="card-emoji-wrap" style="background:var(--emoji-bg)">💬</div>
+          <div class="card-info">
+            <span class="card-tag" style="background:var(--tag-bg);color:var(--tag-color)">Grammar</span>
+            <div class="card-title">Punctuation Check</div>
+          </div>
+        </div>
+        <div class="card-desc">Become a punctuation detective — check a piece of your own writing and fix any mistakes.</div>
+        <div class="card-tap">👆 Tap to see your steps <span class="tap-arrow">▾</span></div>
+        <div class="steps-panel">
+          <div class="steps-title">Your Steps 🪜</div>
+          <ul class="steps-list"><li><span class="step-num" style="background:var(--step-color)">1</span>Find a piece of writing you have already done (from your book or a worksheet).</li><li><span class="step-num" style="background:var(--step-color)">2</span>Read it out loud slowly. Every time you naturally pause, check there is a comma or full stop.</li><li><span class="step-num" style="background:var(--step-color)">3</span>Check every sentence starts with a capital letter. Fix any that don't.</li><li><span class="step-num" style="background:var(--step-color)">4</span>Check for any names of people or places — they always need a capital letter too.</li><li><span class="step-num" style="background:var(--step-color)">5</span>Count how many punctuation marks you fixed. Write: "I fixed __ things. The most common mistake was…"</li></ul>
+          <button class="download-btn" onclick="downloadSummary(\'Punctuation Check\',this)">📄 Download My Steps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- PIN MODAL -->
+<div class="modal-overlay" id="pin-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closePin()">✕</button>
+    <div class="modal-title">🔒 Adult Access</div>
+    <div class="modal-sub">Enter your PIN to open teacher settings</div>
+    <div class="pin-display" id="pin-display">○ ○ ○ ○</div>
+    <div class="pin-error" id="pin-error"></div>
+    <div class="numpad">
+      <button class="numpad-btn" onclick="pinPress('1')">1</button>
+      <button class="numpad-btn" onclick="pinPress('2')">2</button>
+      <button class="numpad-btn" onclick="pinPress('3')">3</button>
+      <button class="numpad-btn" onclick="pinPress('4')">4</button>
+      <button class="numpad-btn" onclick="pinPress('5')">5</button>
+      <button class="numpad-btn" onclick="pinPress('6')">6</button>
+      <button class="numpad-btn" onclick="pinPress('7')">7</button>
+      <button class="numpad-btn" onclick="pinPress('8')">8</button>
+      <button class="numpad-btn" onclick="pinPress('9')">9</button>
+      <button class="numpad-btn del" onclick="pinDel()">⌫</button>
+      <button class="numpad-btn" onclick="pinPress('0')">0</button>
+      <button class="numpad-btn" onclick="closePin()" style="font-size:0.8rem;color:var(--text-muted)">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER PANEL -->
+<div class="teacher-panel" id="teacher-panel">
+  <div class="teacher-header">
+    <div class="teacher-title">🍎 Girolemo — Adult Settings</div>
+    <button class="panel-close-btn" onclick="closeTeacherPanel()">✕ Close</button>
+  </div>
+
+  
+  <div class="teacher-section">
+    <h3>⭐ This Week's Spelling Focus</h3>
+    <p class="section-note">Type the sound, pattern, or word you are focusing on this week. It will show up in a big yellow box on Girolemo's spelling cards.</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+      <input type="text" id="weekly-focus-input" placeholder="e.g.  igh  or  silent e  or  because"
+        style="flex:1;min-width:180px;padding:10px 14px;border-radius:10px;border:2px solid var(--card-border);background:#f8f8ff;font-family:Nunito,sans-serif;font-size:1rem;font-weight:700;color:#1a1a2e;outline:none;">
+      <button onclick="saveWeeklyFocus()" class="save-btn" style="margin-top:0;">💾 Save Focus</button>
+    </div>
+    <div class="saved-msg" id="wf-saved-msg">✓ Focus updated!</div>
+  </div>
+
+  
+  <div class="teacher-section">
+    <h3>⭐ This Week's Spelling Focus</h3>
+    <p class="section-note">Type the focus word, sound, or pattern from this week's phonics lesson. It will show at the top of Girolemo's Spelling section so he knows what to use.</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+      <input type="text" id="weekly-word-input" placeholder="e.g.  'igh' words,  'ought',  silent k…"
+        style="flex:1;min-width:180px;padding:10px 14px;border-radius:10px;border:2px solid #e0e0f0;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;outline:none;color:#1a1a2e;background:#f8f8ff;">
+      <button onclick="saveWeeklyWord()" class="save-btn" style="margin-top:0">💾 Save Focus</button>
+    </div>
+    <div class="saved-msg" id="weekly-word-saved">✓ Focus saved!</div>
+  </div>
+
+  <div class="teacher-section">
+    <h3>📌 Choose Focus Activities</h3>
+    <p class="section-note">Select up to 3 activities per topic to show Girolemo. Leave a topic fully unticked to show all 10 in that topic.</p>
+    <div id="inv-select-list"></div>
+    <button class="save-btn" onclick="saveSelections()">💾 Save &amp; Apply</button>
+    <div class="saved-msg" id="saved-msg">✓ Saved!</div>
+  </div>
+
+  
+  <div class="teacher-section">
+    <h3>📌 This Week's Spelling Focus</h3>
+    <p class="section-note">Type this week's phonics focus word or sound pattern below. It will appear on Girolemo's page as a reminder inside the Spelling &amp; Grammar section.</p>
+    <div class="wf-input-row">
+      <input class="wf-input" id="wf-input" type="text" placeholder="e.g.  ai  /  split digraph  /  because" maxlength="40">
+      <button class="wf-save-btn" onclick="saveWeeklyFocus()">💾 Save Focus</button>
+    </div>
+    <div class="saved-msg" id="wf-saved-msg">✓ Focus word saved!</div>
+  </div>
+  <div class="teacher-section curr-links">
+    <h3>📚 Curriculum Focus (Year 2–3 level)</h3>
+    <p><strong>Adding:</strong> Counting on, number facts to 20, adding two-number numbers, mental tricks or ways of doing it</p>
+    <p><strong>Taking Away:</strong> Counting back, number facts, subtract two-number numbers, opposite sums</p>
+    <p><strong>Story Writing:</strong> Story structure (beginning/middle/end), character, setting, problem &amp; solution, describing words, speech marks</p>
+    <p><strong>Maths Skills:</strong> Place value to 100, measurement, time, money, information, problem solving</p>
+  </div>
+
+  <div class="teacher-section">
+    <h3>📝 Progress Notes</h3>
+    <div class="notes-list" id="notes-list"></div>
+    <button class="save-btn" onclick="saveNotes()" style="background:#1d6fde">💾 Save Notes</button>
+    <div class="saved-msg" id="notes-saved-msg">✓ Notes saved!</div>
+  </div>
+</div>
+
+<script>
+const ALL_INV = [
+  { id: 'add1', title: 'Anime Power Battle', section: 'Adding' },
+  { id: 'add2', title: 'Sushi Restaurant Bill', section: 'Adding' },
+  { id: 'add3', title: 'FNAF Night Score', section: 'Adding' },
+  { id: 'add4', title: 'Anime Sticker Collection', section: 'Adding' },
+  { id: 'add5', title: 'FNAF Parts Counter', section: 'Adding' },
+  { id: 'add6', title: 'Bento Box Builder', section: 'Adding' },
+  { id: 'add7', title: 'Hero Team Whole amount', section: 'Adding' },
+  { id: 'add8', title: 'Flashlight Battery Check', section: 'Adding' },
+  { id: 'add9', title: 'Anime Episode Marathon', section: 'Adding' },
+  { id: 'add10', title: 'Ramen Thing you need Count', section: 'Adding' },
+  { id: 'sub1', title: 'FNAF Jumpscare Counter', section: 'Taking Away' },
+  { id: 'sub2', title: 'Sushi Plate Eater', section: 'Taking Away' },
+  { id: 'sub3', title: 'Anime HP Tracker', section: 'Taking Away' },
+  { id: 'sub4', title: 'Packing for School', section: 'Taking Away' },
+  { id: 'sub5', title: 'Power Outage!', section: 'Taking Away' },
+  { id: 'sub6', title: 'Anime Card Trade', section: 'Taking Away' },
+  { id: 'sub7', title: 'Lunchbox Leftovers', section: 'Taking Away' },
+  { id: 'sub8', title: 'Chromebook Battery Drain', section: 'Taking Away' },
+  { id: 'sub9', title: 'Anime Countdown', section: 'Taking Away' },
+  { id: 'sub10', title: 'Number Line Detective', section: 'Taking Away' },
+  { id: 'nar1', title: 'My Anime Hero Story', section: 'Story Writing' },
+  { id: 'nar2', title: 'Night at Freddy\'s', section: 'Story Writing' },
+  { id: 'nar3', title: 'The Sushi Chef\'s Secret', section: 'Story Writing' },
+  { id: 'nar4', title: 'Lost in the Game', section: 'Story Writing' },
+  { id: 'nar5', title: 'The Friendship Scroll', section: 'Story Writing' },
+  { id: 'nar6', title: 'Diary of a Night Guard', section: 'Story Writing' },
+  { id: 'nar7', title: 'The New Student', section: 'Story Writing' },
+  { id: 'nar8', title: 'The Food Fight', section: 'Story Writing' },
+  { id: 'nar9', title: 'The Chromebook That Came Alive', section: 'Story Writing' },
+  { id: 'nar10', title: 'My Own Adventure', section: 'Story Writing' },
+  { id: 'msk1', title: 'Big and Small Numbers', section: 'Maths Skills' },
+  { id: 'msk2', title: 'Tens and Ones with Anime', section: 'Maths Skills' },
+  { id: 'msk3', title: 'Sushi Sharing Problems', section: 'Maths Skills' },
+  { id: 'msk4', title: 'How Many Ways?', section: 'Maths Skills' },
+  { id: 'msk5', title: 'Tally Chart Champion', section: 'Maths Skills' },
+  { id: 'msk6', title: 'FNAF Maths Missions', section: 'Maths Skills' },
+  { id: 'msk7', title: 'What Time Is It?', section: 'Maths Skills' },
+  { id: 'msk8', title: 'Anime Shop', section: 'Maths Skills' },
+  { id: 'msk9', title: 'Measure It!', section: 'Maths Skills' },
+  { id: 'msk10', title: 'Missing Number Mysteries', section: 'Maths Skills' },
+  { id: 'spl1', title: 'My Word of the Week', section: 'Spelling & Phonics' },
+  { id: 'spl2', title: 'Word Maker', section: 'Spelling & Phonics' },
+  { id: 'spl3', title: 'Spelling Hunt', section: 'Spelling & Phonics' },
+  { id: 'spl4', title: 'Anime Spelling Story', section: 'Spelling & Phonics' },
+  { id: 'spl5', title: 'Sound Swap', section: 'Spelling & Phonics' },
+  { id: 'spl6', title: 'Capital Letters and Full Stops', section: 'Spelling & Phonics' },
+  { id: 'spl7', title: 'Punctuation Patrol', section: 'Spelling & Phonics' },
+  { id: 'spl8', title: 'Look, Say, Cover, Write, Check', section: 'Spelling & Phonics' },
+  { id: 'spl9', title: 'Describing Word Detective', section: 'Spelling & Phonics' },
+  { id: 'spl10', title: 'Spelling All-Star Challenge', section: 'Spelling & Phonics' },
+];
+
+const CORRECT_PIN = '9458';
+const MAX_PER_TOPIC = 3;
+
+// Topic groupings
+const TOPICS = {
+  'Adding':           ['add1','add2','add3','add4','add5','add6','add7','add8','add9','add10'],
+  'Taking Away':      ['sub1','sub2','sub3','sub4','sub5','sub6','sub7','sub8','sub9','sub10'],
+  'Story Writing':['nar1','nar2','nar3','nar4','nar5','nar6','nar7','nar8','nar9','nar10'],
+  'Spelling & Grammar': ['spl1','spl2','spl3','spl4','spl5','spl6','spl7','spl8','spl9','spl10'],
+  'Maths Skills':     ['msk1','msk2','msk3','msk4','msk5','msk6','msk7','msk8','msk9','msk10'],
+  'Spelling & Phonics':['spl1','spl2','spl3','spl4','spl5','spl6','spl7','spl8','spl9','spl10'],
+  
+  'Spelling & Grammar': ['sgr1','sgr2','sgr3','sgr4','sgr5'],
+};
+const TOPIC_COLORS = {
+  'Adding': 'var(--orange-light)',
+  'Taking Away': 'var(--purple-light)',
+  'Story Writing': 'var(--green-light)',
+  'Spelling & Grammar': '#e91e8c',
+  'Maths Skills': 'var(--blue-light)',
+  'Spelling & Phonics': '#e91e8c',
+  'Spelling & Phonics': '#f48fb1',
+  'Spelling & Grammar': '#f48fb1',
+};
+
+
+// ── WEEKLY WORD ───────────────────────────────────────────────────────────────
+function saveWeeklyWord() {
+  const val = document.getElementById('weekly-word-input').value.trim();
+  localStorage.setItem('weeklyWord_g', val);
+  applyWeeklyWord(val);
+  const msg = document.getElementById('weekly-word-saved');
+  msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 2000);
+}
+function applyWeeklyWord(word) {
+  const banner = document.getElementById('weekly-word-banner');
+  const display = document.getElementById('weekly-word-display');
+  if (word) {
+    display.textContent = word;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+function loadWeeklyWord() {
+  const saved = localStorage.getItem('weeklyWord_g') || '';
+  const input = document.getElementById('weekly-word-input');
+  if (input) input.value = saved;
+  applyWeeklyWord(saved);
+}
+
+// ── CARD TOGGLE ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.inv-card').forEach(card => {
+  const tap = card.querySelector('.card-tap');
+  if (tap) tap.addEventListener('click', () => {
+    const wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.inv-card.open').forEach(c => c.classList.remove('open'));
+    if (!wasOpen) card.classList.add('open');
+  });
+});
+
+// ── TTS ──────────────────────────────────────────────────────────────────────
+let ttsRate = 1, currentReadBtn = null;
+function setSpeed(rate, key) {
+  ttsRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('spd-' + key).classList.add('active');
+}
+function ttsStop() {
+  speechSynthesis.cancel();
+  if (currentReadBtn) { currentReadBtn.innerHTML = '🔊 Read aloud'; currentReadBtn.classList.remove('reading'); currentReadBtn = null; }
+}
+function ttsReadCard(btn) {
+  if (currentReadBtn === btn) { ttsStop(); return; }
+  ttsStop();
+  const panel = btn.closest('.steps-panel');
+  const title = panel.closest('.inv-card').querySelector('.card-title').innerText;
+  const desc = panel.closest('.inv-card').querySelector('.card-desc').innerText;
+  const steps = [...panel.querySelectorAll('.steps-list li')].map((li, i) => `Step ${i+1}. ${li.innerText.replace(/^\d+/, '').trim()}`).join('. ');
+  const utt = new SpeechSynthesisUtterance(`${title}. ${desc}. Here are your steps. ${steps}`);
+  utt.rate = ttsRate; utt.lang = 'en-AU';
+  utt.onend = utt.onerror = () => { btn.innerHTML = '🔊 Read aloud'; btn.classList.remove('reading'); currentReadBtn = null; };
+  btn.innerHTML = '⏹ Stop reading'; btn.classList.add('reading'); currentReadBtn = btn;
+  speechSynthesis.speak(utt);
+}
+
+// inject read-aloud buttons
+document.querySelectorAll('.steps-panel').forEach(panel => {
+  const row = document.createElement('div'); row.className = 'card-tts-row';
+  const btn = document.createElement('button'); btn.className = 'card-read-btn'; btn.innerHTML = '🔊 Read aloud';
+  btn.addEventListener('click', e => { e.stopPropagation(); ttsReadCard(btn); });
+  row.appendChild(btn);
+  panel.insertBefore(row, panel.querySelector('.download-btn'));
+});
+
+// ── PIN ───────────────────────────────────────────────────────────────────────
+let pinInput = '';
+function openPin() { pinInput = ''; updatePinDisplay(); document.getElementById('pin-error').textContent = ''; document.getElementById('pin-modal').classList.add('open'); }
+function closePin() { document.getElementById('pin-modal').classList.remove('open'); pinInput = ''; }
+function pinPress(d) {
+  if (pinInput.length >= 4) return;
+  pinInput += d; updatePinDisplay();
+  if (pinInput.length === 4) {
+    setTimeout(() => {
+      if (pinInput === CORRECT_PIN) { closePin(); openTeacherPanel(); }
+      else { document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.'; pinInput = ''; updatePinDisplay(); }
+    }, 250);
+  }
+}
+function pinDel() { pinInput = pinInput.slice(0, -1); updatePinDisplay(); }
+function updatePinDisplay() {
+  const d = ['○','○','○','○'];
+  for (let i = 0; i < pinInput.length; i++) d[i] = '●';
+  document.getElementById('pin-display').textContent = d.join(' ');
+}
+
+// ── TEACHER PANEL ─────────────────────────────────────────────────────────────
+function openTeacherPanel() { buildInvSelectList(); buildNotesList(); document.getElementById('teacher-panel').classList.add('open'); }
+function closeTeacherPanel() { document.getElementById('teacher-panel').classList.remove('open'); }
+
+function getSaved() { return JSON.parse(localStorage.getItem('activeInv_g') || '{}'); }
+
+function buildInvSelectList() {
+  const saved = getSaved();
+  const container = document.getElementById('inv-select-list');
+  container.innerHTML = '';
+
+  Object.entries(TOPICS).forEach(([topicName, ids]) => {
+    const topicSaved = saved[topicName] || [];
+    const block = document.createElement('div');
+    block.className = 'topic-block';
+
+    const label = document.createElement('div');
+    label.className = 'topic-label';
+    label.innerHTML = `<span style="color:${TOPIC_COLORS[topicName]}">${topicName}</span><span class="topic-count" id="tc-${topicName.replace(/\s/g,'_')}">Selected: ${topicSaved.length} / ${MAX_PER_TOPIC}</span>`;
+    block.appendChild(label);
+
+    const list = document.createElement('div');
+    list.className = 'inv-select-list';
+
+    ids.forEach(id => {
+      const inv = ALL_INV.find(i => i.id === id);
+      if (!inv) return;
+      const isChecked = topicSaved.includes(id);
+      const item = document.createElement('label');
+      item.className = 'inv-select-item' + (isChecked ? ' selected' : '');
+      item.informationset.topic = topicName;
+      item.informationset.id = id;
+      item.innerHTML = `<input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}><span>${inv.title}</span>`;
+      item.querySelector('input').addEventListener('change', () => updateTopicCount(topicName));
+      item.addEventListener('click', () => setTimeout(() => {
+        const cb = item.querySelector('input');
+        item.classList.toggle('selected', cb.checked);
+        updateTopicCount(topicName);
+      }, 0));
+      list.appendChild(item);
+    });
+    block.appendChild(list);
+    container.appendChild(block);
+  });
+}
+
+function updateTopicCount(topicName) {
+  const key = topicName.replace(/\s/g,'_');
+  const checked = [...document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"] input:checked`)].length;
+  const el = document.getElementById('tc-' + key);
+  if (el) el.textContent = `Selected: ${checked} / ${MAX_PER_TOPIC}`;
+  // grey out unchecked if at limit
+  document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"]`).forEach(item => {
+    const cb = item.querySelector('input');
+    if (!cb.checked && checked >= MAX_PER_TOPIC) item.classList.add('over-limit');
+    else item.classList.remove('over-limit');
+  });
+}
+
+function saveSelections() {
+  const result = {};
+  Object.keys(TOPICS).forEach(topicName => {
+    const checked = [...document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"] input:checked`)].map(i => i.value);
+    result[topicName] = checked.slice(0, MAX_PER_TOPIC);
+  });
+  localStorage.setItem('activeInv_g', JSON.stringify(result));
+  applySelections(result);
+  const msg = document.getElementById('saved-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+function applySelections(saved) {
+  if (!saved || Object.keys(saved).length === 0) {
+    document.querySelectorAll('.inv-card').forEach(c => c.classList.remove('hidden-inv'));
+    document.querySelectorAll('.section-wrapper').forEach(s => s.classList.remove('all-hidden'));
+    return;
+  }
+  document.querySelectorAll('.inv-card').forEach(card => {
+    const id = card.informationset.id;
+    const topicName = Object.keys(TOPICS).find(t => TOPICS[t].includes(id));
+    const topicSelected = saved[topicName] || [];
+    const hide = topicSelected.length > 0 && !topicSelected.includes(id);
+    card.classList.toggle('hidden-inv', hide);
+  });
+  document.querySelectorAll('.section-wrapper').forEach(sec => {
+    const visible = sec.querySelectorAll('.inv-card:not(.hidden-inv)').length;
+    sec.classList.toggle('all-hidden', visible === 0);
+  });
+}
+
+// ── NOTES ─────────────────────────────────────────────────────────────────────
+function buildNotesList() {
+  const saved = JSON.parse(localStorage.getItem('invNotes_g') || '{}');
+  const list = document.getElementById('notes-list');
+  list.innerHTML = '';
+  ALL_INV.forEach(inv => {
+    const item = document.createElement('div'); item.className = 'note-item';
+    item.innerHTML = `<label>${inv.section} — ${inv.title}</label><textarea id="note-${inv.id}" placeholder="Add notes…">${saved[inv.id] || ''}</textarea>`;
+    list.appendChild(item);
+  });
+}
+function saveNotes() {
+  const n = {};
+  ALL_INV.forEach(inv => { const t = document.getElementById('note-' + inv.id); if (t && t.value) n[inv.id] = t.value; });
+  localStorage.setItem('invNotes_g', JSON.stringify(n));
+  const msg = document.getElementById('notes-saved-msg');
+  msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────────────────
+function downloadSummary(title, btn) {
+  const card = btn.closest('.inv-card');
+  const steps = [...card.querySelectorAll('.steps-list li')].map((li, i) => `Step ${i+1}: ${li.innerText.replace(/^\d+/, '').trim()}`).join('\n');
+  const blob = new Blob([`⚡ Girolemo's Finding out Station\n\nActivity: ${title}\n\n${steps}\n\n--- Year 3 Activity ---`], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = title.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '-steps.txt'; a.click();
+}
+
+
+// ── WEEKLY FOCUS WORD ────────────────────────────────────────────────────────
+function saveWeeklyFocus() {
+  const val = document.getElementById('weekly-focus-input').value.trim();
+  localStorage.setItem('weeklyFocus_g', val);
+  updateWeeklyFocusBanner(val);
+  const msg = document.getElementById('wf-saved-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+function updateWeeklyFocusBanner(val) {
+  const el = document.getElementById('wf-display');
+  if (el) el.textContent = val || 'Ask your teacher!';
+}
+function loadWeeklyFocus() {
+  const saved = localStorage.getItem('weeklyFocus_g') || '';
+  updateWeeklyFocusBanner(saved);
+  const input = document.getElementById('weekly-focus-input');
+  if (input && saved) input.value = saved;
+}
+
+
+// ── WEEKLY FOCUS ──────────────────────────────────────────────────────────────
+function saveWeeklyFocus() {
+  const val = document.getElementById('wf-input').value.trim();
+  localStorage.setItem('weeklyFocus_g', val);
+  applyWeeklyFocus(val);
+  const msg = document.getElementById('wf-saved-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+function applyWeeklyFocus(word) {
+  const banner = document.getElementById('weekly-focus-banner');
+  const display = document.getElementById('wf-display');
+  if (word && word.length > 0) {
+    display.textContent = word;
+    banner.style.display = 'flex';
+    // update any spl cards that reference the focus word
+    document.querySelectorAll('.sec-spl .card-desc, .sec-spl .steps-list li').forEach(el => {
+      el.innerHTML = el.innerHTML.replace(/your focus word/gi,
+        `<strong style="color:#e91e8c">${word}</strong>`);
+    });
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function loadWeeklyFocus() {
+  const saved = localStorage.getItem('weeklyFocus_g') || '';
+  if (saved) {
+    const input = document.getElementById('wf-input');
+    if (input) input.value = saved;
+    applyWeeklyFocus(saved);
+  }
+}
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = getSaved();
+  applySelections(saved);
+  loadWeeklyFocus();
+});
+</script>
+</body>
+</html>
