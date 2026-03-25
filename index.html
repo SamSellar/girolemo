@@ -1608,24 +1608,18 @@ const MAX_PER_TOPIC = 3;
 
 // Topic groupings
 const TOPICS = {
-  'Adding':           ['add1','add2','add3','add4','add5','add6','add7','add8','add9','add10'],
-  'Taking Away':      ['sub1','sub2','sub3','sub4','sub5','sub6','sub7','sub8','sub9','sub10'],
-  'Story Writing':['nar1','nar2','nar3','nar4','nar5','nar6','nar7','nar8','nar9','nar10'],
-  'Spelling & Grammar': ['spl1','spl2','spl3','spl4','spl5','spl6','spl7','spl8','spl9','spl10'],
-  'Maths Skills':     ['msk1','msk2','msk3','msk4','msk5','msk6','msk7','msk8','msk9','msk10'],
+  'Adding':            ['add1','add2','add3','add4','add5','add6','add7','add8','add9','add10'],
+  'Taking Away':       ['sub1','sub2','sub3','sub4','sub5','sub6','sub7','sub8','sub9','sub10'],
+  'Story Writing':     ['nar1','nar2','nar3','nar4','nar5','nar6','nar7','nar8','nar9','nar10'],
   'Spelling & Phonics':['spl1','spl2','spl3','spl4','spl5','spl6','spl7','spl8','spl9','spl10'],
-  
-  'Spelling & Grammar': ['sgr1','sgr2','sgr3','sgr4','sgr5'],
+  'Maths Skills':      ['msk1','msk2','msk3','msk4','msk5','msk6','msk7','msk8','msk9','msk10'],
 };
 const TOPIC_COLORS = {
   'Adding': 'var(--orange-light)',
   'Taking Away': 'var(--purple-light)',
   'Story Writing': 'var(--green-light)',
-  'Spelling & Grammar': '#e91e8c',
-  'Maths Skills': 'var(--blue-light)',
   'Spelling & Phonics': '#e91e8c',
-  'Spelling & Phonics': '#f48fb1',
-  'Spelling & Grammar': '#f48fb1',
+  'Maths Skills': 'var(--blue-light)',
 };
 
 
@@ -1749,8 +1743,8 @@ function buildInvSelectList() {
       const isChecked = topicSaved.includes(id);
       const item = document.createElement('label');
       item.className = 'inv-select-item' + (isChecked ? ' selected' : '');
-      item.informationset.topic = topicName;
-      item.informationset.id = id;
+      item.dataset.topic = topicName;
+      item.dataset.id = id;
       item.innerHTML = `<input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}><span>${inv.title}</span>`;
       item.querySelector('input').addEventListener('change', () => updateTopicCount(topicName));
       item.addEventListener('click', () => setTimeout(() => {
@@ -1767,11 +1761,11 @@ function buildInvSelectList() {
 
 function updateTopicCount(topicName) {
   const key = topicName.replace(/\s/g,'_');
-  const checked = [...document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"] input:checked`)].length;
+  const checked = [...document.querySelectorAll(`.inv-select-item[data-topic="${topicName}"] input:checked`)].length;
   const el = document.getElementById('tc-' + key);
   if (el) el.textContent = `Selected: ${checked} / ${MAX_PER_TOPIC}`;
   // grey out unchecked if at limit
-  document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"]`).forEach(item => {
+  document.querySelectorAll(`.inv-select-item[data-topic="${topicName}"]`).forEach(item => {
     const cb = item.querySelector('input');
     if (!cb.checked && checked >= MAX_PER_TOPIC) item.classList.add('over-limit');
     else item.classList.remove('over-limit');
@@ -1781,7 +1775,7 @@ function updateTopicCount(topicName) {
 function saveSelections() {
   const result = {};
   Object.keys(TOPICS).forEach(topicName => {
-    const checked = [...document.querySelectorAll(`.inv-select-item[information-topic="${topicName}"] input:checked`)].map(i => i.value);
+    const checked = [...document.querySelectorAll(`.inv-select-item[data-topic="${topicName}"] input:checked`)].map(i => i.value);
     result[topicName] = checked.slice(0, MAX_PER_TOPIC);
   });
   localStorage.setItem('activeInv_g', JSON.stringify(result));
@@ -1798,7 +1792,7 @@ function applySelections(saved) {
     return;
   }
   document.querySelectorAll('.inv-card').forEach(card => {
-    const id = card.informationset.id;
+    const id = card.dataset.id;
     const topicName = Object.keys(TOPICS).find(t => TOPICS[t].includes(id));
     const topicSelected = saved[topicName] || [];
     const hide = topicSelected.length > 0 && !topicSelected.includes(id);
